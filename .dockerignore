@@ -1,0 +1,38 @@
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+
+.env
+# Ignore virtual environment directories
+venv/
+env/
+.venv/
+
+# Ignore any local environment or editor settings
+.vscode/
+.idea/
+*.swp
+
+# Ignore log files
+*.log
+
+# Ignore any Docker-related files (optional)
+Dockerfile
+docker-compose.yml
+
+# Ignore any temporary files or directories
+tmp/
+temp/
+
+# Ignore test results
+coverage/
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Ignore database files
+*.sqlite3
+*.db
