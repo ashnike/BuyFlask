@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_IMAGE_NAME }}
+          images: ${{ secrets.DOCKER_IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
 
@@ -36,5 +36,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
+          tags: ${{ secrets.DOCKER_IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
