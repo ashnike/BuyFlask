@@ -131,3 +131,18 @@ Use ab to simulate load. Replace <your-service-url> with your application’s se
 ```
 ab -n 50000000 -c 200 http://<your-service-url>/
 ```
+
+### Images:
+Successful Deployment
+![deployment](images/deployment-minikube.png)
+
+Before Load
+![Before Load](images/Before-Load.png)
+
+During Load
+![During Load](images/during-load.png)
+
+After Load
+![After Load](images/after-load.png)
+
+
