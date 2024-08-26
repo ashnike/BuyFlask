@@ -13,6 +13,7 @@ docker-compose.yml
 # Ignore Kubernetes configuration files
 flaskk8s/
 monk8s/
+images/
 namespace.yaml
 
 # Ignore README file

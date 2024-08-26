@@ -76,6 +76,14 @@ Deploy MongoDB StatefulSet:
 kubectl apply -f monk8s/mstate.yaml
 ```
 **Flask Application Deployment**
+Create a Docker secret to authenticate with the private docker repository to pull the image.
+```
+kubectl create secret docker-registry my-registry-secret   --docker-username=<username>   
+--docker-password=<PAT-token-value>   
+--docker-email=<email-id>   
+--namespace=<namespace-name>
+
+```
 
 Create the Secrets for Flask:
 ```
@@ -88,4 +96,38 @@ kubectl apply -f flaskk8s/hpa.yaml
 Deploy the Flask Application:
 ```
 kubectl apply -f flaskk8s/flask-deploy.yaml
+```
+### Communication from one namespace to other
+By default, services are accessible from any namespace using the fully qualified domain name (FQDN).
+The DNS name format for services in different namespaces is:
+```
+<service-name>.<namespace>.svc.cluster.local
+```
+Add the following MONOGODB_URI env to the flask application , edit the secrets.
+```
+MONOGODB_URI:mongodb://<user-name>:<user-passowrd>@mongo-service.mongo-namespace.svc.cluster.local:27017/<database-name>
+```
+### HEALTH metrics and Load Testing
+**Installing Health metrics**
+
+Download the metrics-server Deployment Manifest
+```
+curl -LO https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+Edit the Manifest to Include --kubelet-insecure-tls
+Apply the Modified Manifest
+After making the changes, apply the updated manifest to your cluster:
+```
+kubectl apply -f components.yaml
+```
+
+**Testing the HPA**
+
+Generate Load Using ApacheBench
+```
+sudo apt-get install apache2-utils
+```
+Use ab to simulate load. Replace <your-service-url> with your application’s service URL.
+```
+ab -n 50000000 -c 200 http://<your-service-url>/
 ```
