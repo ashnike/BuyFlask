@@ -145,4 +145,35 @@ During Load
 After Load
 ![After Load](images/after-load.png)
 
+### Internal Workings 
+**DNS Resolution:**
+DNS Records: When a service is created, Kubernetes automatically creates DNS records for it. These records map the service name to the service’s cluster IP address, which is used for communication between pods.
 
+Pod DNS Configuration: Pods use the cluster’s DNS service to resolve service names. By default, Kubernetes configures each pod’s DNS settings to use the cluster DNS service, so pods can resolve service names to their respective IP addresses.
+
+DNS Service: Kubernetes includes a built-in DNS service, usually provided by kube-dns or CoreDNS, which resolves service names to IP addresses within the cluster. This service is deployed as a set of pods within the cluster and manages the DNS records for services.
+
+Service Discovery: Each Kubernetes service is assigned a DNS name in the format of <service-name>.<namespace>.svc.cluster.local. This DNS name can be used by other pods within the same or different namespaces to access the service.
+
+By default, services are accessible across namespaces using FQDNs in the format <service-name>.<namespace>.svc.cluster.local.
+This allows the Flask application to connect to the MongoDB service within the mongo-namespace by referencing its FQDN in the MONOGODB_URI environment variable.
+
+Format: <service-name>.<namespace>.svc.cluster.local
+<service-name>: The name of the Kubernetes Service.
+<namespace>: The namespace in which the service is located.
+
+svc.cluster.local: The default DNS suffix used by Kubernetes for services.
+
+
+**Resource Requests and Limits:**
+Resource Limits define the maximum amount of CPU or memory a container can use. These limits prevent a container from consuming more resources than allowed, which could otherwise impact the performance of other containers on the same node.
+These are Kubernetes features that allow specifying minimum and maximum resource requirements (CPU, memory) for pods.
+Including them helps manage cluster resource allocation and prevent applications from exceeding their bounds.
+- CPU Limit: The maximum CPU resources a container can use. If a container tries to use more CPU than its limit, Kubernetes will throttle it.
+- Memory Limit: The maximum amount of memory a container can use. If a container exceeds its memory limit, it will be terminated and potentially restarted by Kubernetes.
+
+**Design Choices:**
+- Using a private container registry improves security and control over the Docker image.
+- A StatefulSet for MongoDB ensures data persistence across pod restarts.
+- Using Secrets for sensitive information like credentials enhances security.
+- Including an HPA allows automatic scaling based on application load.
