@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+  namespace: fname
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-container
+        image: ashniike/buyflask:latest
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "200m"
+          limits:
+            memory: "500Mi"
+            cpu: "500m"
+        env:
+        - name: FLASK_APP
+          valueFrom:
+            secretKeyRef:
+              name: flask-secret
+              key: FLASK_APP
+        - name: FLASK_ENV
+          valueFrom:
+            secretKeyRef:
+              name: flask-secret
+              key: FLASK_ENV
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: flask-secret
+              key: MONGODB_URI
+      imagePullSecrets:
+      - name: my-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+  namespace: fname
+spec:
+  selector:
+    app: flask-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  type: NodePort

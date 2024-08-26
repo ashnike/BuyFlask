@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-init-config
+  namespace: mname
+data:
+  init.js: |
+    db = db.getSiblingDB('flask_db');  // Creates the database
+    db.createUser({
+      user: "ash",
+      pwd: "ash9900",
+      roles: [{ role: "readWrite", db: "flask_db" }]
+    });

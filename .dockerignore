@@ -3,36 +3,23 @@
 *.pyo
 __pycache__/
 
-
+# Ignore environment files
 .env
-# Ignore virtual environment directories
-venv/
-env/
-.venv/
+*.env
 
-# Ignore any local environment or editor settings
-.vscode/
-.idea/
-*.swp
-
-# Ignore log file
-*.log
-
-# Ignore any Docker-related files (optional)
-Dockerfile
+# Ignore Docker Compose files (if not needed in the image)
 docker-compose.yml
 
-# Ignore any temporary files or directories
-tmp/
-temp/
+# Ignore Kubernetes configuration files
+flaskk8s/
+monk8s/
+namespace.yaml
 
-# Ignore test results
-coverage/
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+# Ignore README file
+README.md
 
-# Ignore database files
-*.sqlite3
-*.db
+# Ignore the Docker ignore file itself
+.dockerignore
+
+# Ignore other unnecessary files
+mongo-init.js
